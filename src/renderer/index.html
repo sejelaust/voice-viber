@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice Viber</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Local Dictation</p>
+          <h1>Voice Viber</h1>
+          <p class="subtitle">
+            Record, transcribe with Whisper, clean up with a local LLM, then paste or save the result.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button id="toggleRecording" class="primary-button">Start Recording</button>
+          <button id="openLog" class="secondary-button">Open Transcript Log</button>
+        </div>
+      </section>
+
+      <section class="status-card">
+        <div class="status-header">
+          <span class="status-dot" id="statusDot"></span>
+          <strong id="statusMessage">Loading settings…</strong>
+        </div>
+        <pre id="resultPreview" class="result-preview">No transcript yet.</pre>
+      </section>
+
+      <div class="grid">
+        <section class="panel">
+          <h2>Hotkey</h2>
+          <label>
+            Global shortcut
+            <input id="hotkey" type="text" placeholder="CommandOrControl+Shift+Space" />
+          </label>
+          <p class="hint">Electron accelerator format. Example: <code>CommandOrControl+Shift+Space</code>.</p>
+        </section>
+
+        <section class="panel">
+          <h2>Speech To Text</h2>
+          <label>
+            Whisper command
+            <input id="sttCommand" type="text" placeholder="whisper-cli" />
+          </label>
+          <label>
+            Model file
+            <div class="inline-field">
+              <input id="sttModelPath" type="text" placeholder="/Users/you/whisper-models/ggml-base.en.bin" />
+              <button id="browseModelFile" class="secondary-button compact-button">Browse</button>
+            </div>
+          </label>
+          <label>
+            Model directory
+            <div class="inline-field">
+              <input id="sttModelDirectory" type="text" placeholder="/Users/you/whisper-models" />
+              <button id="browseModelDirectory" class="secondary-button compact-button">Browse</button>
+            </div>
+          </label>
+          <label>
+            Language
+            <input id="sttLanguage" type="text" placeholder="auto" />
+          </label>
+          <div class="inline-actions">
+            <button id="refreshSttModels" class="secondary-button">Refresh STT Models</button>
+          </div>
+          <select id="sttModelSelect" size="6"></select>
+        </section>
+
+        <section class="panel">
+          <h2>LLM Cleanup</h2>
+          <label class="checkbox">
+            <input id="llmEnabled" type="checkbox" />
+            Enable local cleanup
+          </label>
+          <label>
+            Ollama model
+            <div class="inline-field">
+              <input id="llmModel" type="text" placeholder="llama3.2:3b" />
+              <button id="refreshOllamaModels" class="secondary-button compact-button">Refresh</button>
+            </div>
+          </label>
+          <label>
+            Ollama endpoint
+            <input id="llmEndpoint" type="text" placeholder="http://127.0.0.1:11434/api/generate" />
+          </label>
+          <label>
+            Cleanup prompt
+            <textarea id="llmPrompt" rows="7"></textarea>
+          </label>
+          <select id="ollamaModelSelect" size="6"></select>
+        </section>
+
+        <section class="panel">
+          <h2>Output</h2>
+          <label>
+            Transcript log
+            <input id="fallbackFile" type="text" placeholder="~/Documents/voice-viber-transcripts.md" />
+          </label>
+          <label class="checkbox">
+            <input id="copyToClipboard" type="checkbox" />
+            Copy cleaned text to clipboard
+          </label>
+          <label class="checkbox">
+            <input id="autoPaste" type="checkbox" />
+            Try to paste back into the previous app
+          </label>
+          <p class="hint">Paste-back is best effort. The transcript is always saved to the log file.</p>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <button id="saveConfig" class="primary-button">Save Settings</button>
+      </footer>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
